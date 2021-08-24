@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <button id="btn" class="btn btn-primary">Show Cars</button>
+   <div class="container" >
+    <div id="content" class="row"></div>
+</div>
+
+<button id="hide" class="btn btn-success">Hide Cars</button>
+    <script>
+        const btn = document.getElementById('btn');
+        btn.addEventListener("click", showCar)
+        function showCar() {
+            let xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "webservice.php");
+            // console.log(this.responseText);
+            xhttp.onload = function () {
+                if (this.status == 200) {
+                   let output ="";
+                   let cars = JSON.parse(this.responseText);
+                   console.log(cars);
+                    for(let car of cars){
+                    output += `<div class=" mb-3 col col-12 col-sm-12 col-md-6 col-lg-3 d-flex align-items-stretch ">
+        <div class="row g-1 container-fluid card shadow-lg bg-card-color">
+        <div class="container-fluid">
+        <img  style="width:100%; height:220px; object-fit: cover;" src="${car.img}" class="card-img-top d-sm-none d-md-block d-none img-fluid" alt="...">
+        <div class="card-body">
+        <h5 class="card-title">${car.name}</h5>
+        <p class="card-text">${car.price}</p>
+    </div>
+        </div>
+        </div>
+        </div>
+         `
+         ;}
+         document.getElementById("content").innerHTML = output;
+                }
+            };
+            xhttp.send();
+        }
+     
+        document.getElementById("hide").addEventListener("click", hideCar);
+
+        function hideCar() {
+            document.getElementById("content").innerHTML = "";
+        }
+    </script>
+
+    
+</body>
+
+</html>
